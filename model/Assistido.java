@@ -2,37 +2,50 @@ package model;
 
 import java.time.LocalDate;
 
-public class Assistido extends Pessoa {
+import exceptions.AssistidoInvalidoException;
+import exceptions.PessoaFisicaException;
+import exceptions.PessoaInvalidaException;
 
-	private String tipoDeCancer;
-	private boolean ativo;
+public class Assistido extends PessoaFisica {
+	private String apelido;
+    private String tipoDeCancer;
+    private boolean status;
 
-	public Assistido() {
-		super();
+    public Assistido(int id, String nome, String endereco,  LocalDate dataCadastro, String telefone, String telefone2, String email, boolean ativo, String cpf, String rg, LocalDate dataNasc, String apelido, String tipoDeCancer, boolean status) throws PessoaInvalidaException, PessoaFisicaException, AssistidoInvalidoException {
+    	super(id, nome, endereco, dataCadastro, telefone, telefone2, email, ativo, cpf, rg, dataNasc);
+        setApelido(apelido);
+        setStatus(status);
+        setTipoDeCancer(tipoDeCancer);
+    }
+
+    public String getApelido() {
+		return apelido;
 	}
-	public Assistido(String nome, String cpf, String endereco, LocalDate dataNascimento,
-			String telefone, String telefone2, long rg, String email, String tipoDeCancer, boolean ativo) {
-		super(nome, cpf, endereco, dataNascimento, telefone, telefone2, rg, email);
-		this.tipoDeCancer = tipoDeCancer;
-		this.ativo = ativo;
-	}
 
-	
+	public void setApelido(String apelido) throws AssistidoInvalidoException {
+		if(apelido == null) {
+    		throw new AssistidoInvalidoException("O apelido informado é inválido!");
+    	}
+		this.apelido = apelido;
+	}
 
 	public String getTipoDeCancer() {
-		return tipoDeCancer;
-	}
+        return tipoDeCancer;
+    }
 
-	public void setTipoDeCancer(String tipoDeCancer) {
-		this.tipoDeCancer = tipoDeCancer;
-	}
+    public void setTipoDeCancer(String tipoDeCancer) throws AssistidoInvalidoException {
+    	if(tipoDeCancer == null) {
+    		throw new AssistidoInvalidoException("O tipo de cancer informado é inválido!");
+    	}
+        this.tipoDeCancer = tipoDeCancer;
+    }
 
-	public boolean getAtivo() {
-		return ativo;
-	}
+    public boolean getStatus() {
+        return status;
+    }
 
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
 }
