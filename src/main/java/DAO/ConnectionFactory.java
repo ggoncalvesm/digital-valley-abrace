@@ -10,7 +10,7 @@ public class ConnectionFactory {
         if(connection != null) closeConnection();
         try{
         	Class.forName(driver);
-        	connection = DriverManager.getConnection("jdbc:derby:"+dbName+";create=true", "minicrm", "minicrm");
+        	connection = DriverManager.getConnection("jdbc:derby:"+dbName+";create=true", "abrace", "abrace");
             return connection;
         } catch(SQLException e){
             throw new RuntimeException(e);

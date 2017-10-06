@@ -5,6 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import exceptions.UsuarioInvalidoException;
 import exceptions.PessoaInvalidaException;
 import model.Usuario;
@@ -33,20 +37,55 @@ public class DAOUsuario extends ExecutaSQL{
         return null;
     }
 	
-	public void cadastrar() {
-			String sql = "insert into ABRACE.Pessoa (ativo, datacadastro, email, telefone1, telefone2, endereco, nome) values (TRUE, '02/19/1998', 'ggoncalvesmg@gmail.com', '97893515', '97893515', 'Joaquim de Castro Meireles, 583', 'Gabriel Gonçalves')";
+	public void cadastraPessoa() {
+			String sql = "insert into ABRACE.Pessoa_Fisica (idPessoa, cpf, rg, dataNascimento) values (1, '047.318.353-18', '20212121212', '02/19/1998')";
 			PreparedStatement ps;
 			try {
 				ps = getConexao().prepareStatement(sql);
-				boolean b = ps.execute();
-				System.out.println(b);
+				int b = ps.executeUpdate();
 			} catch (SQLException e) {
 				System.out.println(e.getMessage());
 			}
 	}
-
-	
-	public static void main(String[] args) {
-		new DAOUsuario(new ConnectionFactory().getConnection()).cadastrar();
+	public void cadastra() {
+		String sql = "insert into ABRACE.Usuario (idPessoa, login, senha) values (1,'ggoncalvesm', 'doit')";
+		PreparedStatement ps;
+		try {
+			ps = getConexao().prepareStatement(sql);
+			boolean b = ps.execute();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
 	}
+	
+	public void pega() {
+		String sql = "SELECT login,senha,idPessoa FROM ABRACE.Usuario WHERE login = ? and senha = ?";
+		PreparedStatement ps;
+		try {
+			ps = getConexao().prepareStatement(sql);
+			ps.setString(1, "ggoncalvesm");
+			ps.setString(2, "doit");
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				String login = rs.getString(1);
+				String senha = rs.getString(2);
+				int id = rs.getInt(3);
+				System.err.println("login: "+login);
+				System.err.println("senha: "+senha);
+				System.err.println("id: "+id);
+			}
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+		   
+	public static void main(String[] args) {
+		
+
+		DAOUsuario TEST = new DAOUsuario(new ConnectionFactory().getConnection());
+		TEST.cadastraPessoa();
+		TEST.cadastra();
+		TEST.pega();
+	}
+
 }
